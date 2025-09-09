@@ -1,11 +1,11 @@
 import './App.css'
-import {ArticleCard} from "./components/ArticleCard.tsx";
+import {NewsFeed} from "./components/NewsFeed.tsx";
 
 function App() {
 
     return (
         <div className="App">
-            <ArticleCard/>
+            <NewsFeed/>
         </div>
     )
 }
