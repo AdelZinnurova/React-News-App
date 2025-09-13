@@ -12,7 +12,7 @@ export const ArticleCard = ({article}: ArticleCardProps) => {
             <div className="card-body">
                 <div className='d-flex justify-content-between'>
                     <p className="card-text text-primary-emphasis">{article.source.name}</p>
-                    <p className='text-secondary-emphasis'>{new Date(article.publishedAt).toLocaleDateString()}</p>
+                    <p className='card-text text-secondary-emphasis'>{new Date(article.publishedAt).toLocaleDateString()}</p>
                 </div>
                 <div>
                     <p className="h5 card-title">{article.title}</p>

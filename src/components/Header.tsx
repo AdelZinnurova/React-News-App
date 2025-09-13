@@ -19,6 +19,10 @@ export const Header = () => {
         document.documentElement.setAttribute("data-bs-theme", theme);
     }, [theme]);
 
+    useEffect(() => {
+        localStorage.setItem("theme", theme);
+    }, [theme]);
+
     const toggleTheme = () => setTheme(t => (t === "light" ? "dark" : "light"));
 
     return (
