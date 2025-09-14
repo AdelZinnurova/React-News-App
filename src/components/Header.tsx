@@ -1,7 +1,13 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {useEffect, useState} from "react";
 
-export const Header = () => {
+type HeaderProps = {
+    viewMode: 'news' | 'favorites';
+    onViewModeChange: (mode: 'news' | 'favorites') => void;
+    favoritesCount: number;
+}
+
+export const Header = ({viewMode, favoritesCount, onViewModeChange}:HeaderProps) => {
     const [theme, setTheme] = useState<"light" | "dark">(() => {
         try {
             const saved = localStorage.getItem("theme") as "light" | "dark" | null;
@@ -24,6 +30,10 @@ export const Header = () => {
     }, [theme]);
 
     const toggleTheme = () => setTheme(t => (t === "light" ? "dark" : "light"));
+    const toggleViewMode = () => {
+        const newMode = viewMode === 'news' ? 'favorites' : 'news';
+        onViewModeChange(newMode);
+    };
 
     return (
         <div className='d-flex justify-content-between align-items-center mb-5'>
@@ -42,9 +52,20 @@ export const Header = () => {
                     className="form-control"
                 />
             </form>
-            <button onClick={toggleTheme}>
-                {theme === "light" ? <i className="bi bi-sun fs-4"></i>  : <i className="bi bi-moon fs-4"></i>}
-            </button>
+            <div className='d-flex gap-3'>
+                <button onClick={toggleViewMode}
+                        className={`btn ${viewMode === 'favorites' ? 'btn-primary' : 'btn-outline-primary'} position-relative`}>
+                    <i className="bi bi-bookmark"></i>
+                    {favoritesCount > 0 && (
+                        <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                            {favoritesCount}
+                        </span>
+                    )}
+                </button>
+                <button onClick={toggleTheme}>
+                    {theme === "light" ? <i className="bi bi-sun fs-4"></i>  : <i className="bi bi-moon fs-4"></i>}
+                </button>
+            </div>
         </div>
     )
 }

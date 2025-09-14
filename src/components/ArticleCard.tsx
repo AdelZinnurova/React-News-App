@@ -3,9 +3,11 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 type ArticleCardProps = {
     article: Article
+    isFavorite: boolean;
+    onToggleFavorite: (article: Article) => void;
 }
 
-export const ArticleCard = ({article}: ArticleCardProps) => {
+export const ArticleCard = ({article, onToggleFavorite, isFavorite}: ArticleCardProps) => {
     return (
         <article className="card h-100">
             <img className="card-img-top mb-3" src={article.image} alt="image"/>
@@ -20,7 +22,9 @@ export const ArticleCard = ({article}: ArticleCardProps) => {
                     <div className='d-flex justify-content-between'>
                         <a className="card-link text-decoration-none" href={article.url}>Reed more</a>
                         <div className='d-flex gap-3 mb-3'>
-                            <button><i className="bi bi-bookmark"></i></button>
+                            <button onClick={() => onToggleFavorite(article)}>
+                                <i className={isFavorite ? "bi bi-bookmark-check-fill" : "bi bi-bookmark"}></i>
+                            </button>
                             <button><i className="bi bi-share"></i></button>
                         </div>
                     </div>

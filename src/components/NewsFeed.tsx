@@ -2,6 +2,11 @@ import {useEffect, useState} from "react";
 import {ArticleCard} from "./ArticleCard.tsx";
 import type {Article, Category} from "../types";
 
+type NewsFeedProps = {
+    isFavorite: (id: string) => boolean;
+    onToggleFavorite: (article: Article) => void;
+}
+
 const mockArticles: Article[] = [
     {
         id: "1",
@@ -20,6 +25,7 @@ const mockArticles: Article[] = [
             country: "us",
         },
         category: "technology",
+        isFavorite: false,
     },
     {
         id: "2",
@@ -38,6 +44,7 @@ const mockArticles: Article[] = [
             country: "us",
         },
         category: "technology",
+        isFavorite: false,
     },
     {
         id: "3",
@@ -56,6 +63,7 @@ const mockArticles: Article[] = [
             country: "us",
         },
         category: "business",
+        isFavorite: false,
     },
     {
         id: "4",
@@ -74,6 +82,7 @@ const mockArticles: Article[] = [
             country: "us",
         },
         category: "sports",
+        isFavorite: false,
     },
     {
         id: "5",
@@ -98,8 +107,8 @@ const mockArticles: Article[] = [
 const API_KEY = 'f49e4a9d91f4660bfad17bc73c61bf49';
 const BASE_URL = 'https://gnews.io/api/v4';
 
-export const NewsFeed = () => {
-    const [articles, setArticles] = useState<Article[]| null>(mockArticles);
+export const NewsFeed = ({isFavorite, onToggleFavorite}: NewsFeedProps) => {
+    const [articles, setArticles] = useState<Article[] | null>(mockArticles);
     const [category, setCategory] = useState<Category>('general');
     const [error, setError] = useState<string | null>(null);
     const [loading, setLoading] = useState<boolean>(false)
@@ -138,7 +147,8 @@ export const NewsFeed = () => {
                     {(["general", "technology", "business", "entertainment", "sports", "science", "health"] as Category[])
                         .map(cat => (
                             <li key={cat} className="is-active text-capitalize">
-                                <a className={`nav-link ${category === cat ? "active" : ""}`} onClick={() => setCategory(cat)}>{cat} </a>
+                                <a className={`nav-link ${category === cat ? "active" : ""}`}
+                                   onClick={() => setCategory(cat)}>{cat} </a>
                             </li>
                         ))}
                 </ul>
@@ -147,7 +157,9 @@ export const NewsFeed = () => {
             <div className='row row-cols-1 row-cols-md-3 g-4'>
                 {articles && articles.map((a) => (
                     <div key={a.id || a.url}>
-                        <ArticleCard article={a}/>
+                        <ArticleCard article={a}
+                                     isFavorite={isFavorite(a.id)}
+                                     onToggleFavorite={onToggleFavorite}/>
                     </div>
                 ))}
             </div>

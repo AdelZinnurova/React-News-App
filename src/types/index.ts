@@ -16,6 +16,7 @@ export type Article = {
     lang: string;
     source: Source;
     category?: string;
+    isFavorite?: boolean;
 }
 
 export type Category =
