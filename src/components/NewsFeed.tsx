@@ -113,24 +113,24 @@ export const NewsFeed = ({isFavorite, onToggleFavorite}: NewsFeedProps) => {
     const [error, setError] = useState<string | null>(null);
     const [loading, setLoading] = useState<boolean>(false)
 
-    // const fetchNewsData = async (categoryName: Category) => {
-    //     setCategory(categoryName);
-    //     try {
-    //         setLoading(true);
-    //         setError(null)
-    //         const response = await fetch(`${BASE_URL}/top-headlines?category=${categoryName}&lang=en&country=us&max=10&apikey=${API_KEY}`);
-    //         const data = await response.json();
-    //         setArticles(data.articles)
-    //     } catch {
-    //         setError("Couldnt fetch data,please try again")
-    //     } finally {
-    //         setLoading(false);
-    //     }
-    // }
-    //
-    // useEffect(() => {
-    //     fetchNewsData(category)
-    // }, [category]);
+    const fetchNewsData = async (categoryName: Category) => {
+        setCategory(categoryName);
+        try {
+            setLoading(true);
+            setError(null)
+            const response = await fetch(`${BASE_URL}/top-headlines?category=${categoryName}&lang=en&country=us&max=10&apikey=${API_KEY}`);
+            const data = await response.json();
+            setArticles(data.articles)
+        } catch {
+            setError("Couldnt fetch data, please try again")
+        } finally {
+            setLoading(false);
+        }
+    }
+
+    useEffect(() => {
+        fetchNewsData(category)
+    }, [category]);
 
     useEffect(() => {
         setArticles(mockArticles);

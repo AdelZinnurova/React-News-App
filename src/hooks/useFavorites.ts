@@ -16,7 +16,6 @@ export const useFavorites = () => {
     }, [favorites]);
 
     const addToFavorites = (article: Article) => {
-        console.log('Adding to favorites:', article.id);
         const exists = favorites.some(fav => fav.id === article.id);
         if (!exists) {
             setFavorites([...favorites, { ...article, isFavorite: true }]);
@@ -24,7 +23,6 @@ export const useFavorites = () => {
     };
 
     const removeFromFavorites = (id: string) => {
-        console.log('Removing from favorites:', id);
         setFavorites(favorites.filter(article => article.id !== id));
     };
 
@@ -33,7 +31,6 @@ export const useFavorites = () => {
     };
 
     const toggleFavorite = (article: Article) => {
-        console.log('Toggling favorite for:', article.id);
         if (isFavorite(article.id)) {
             removeFromFavorites(article.id);
         } else {

@@ -29,3 +29,10 @@ export type Category =
     | 'sports'
     | 'science'
     | 'health';
+
+export interface SearchParams {
+    query: string;
+    category?: Category;
+    from?: string;
+    to?: string;
+}
