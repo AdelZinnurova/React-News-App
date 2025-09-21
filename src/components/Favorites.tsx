@@ -20,7 +20,7 @@ export const Favorites = ({ favorites, onToggleFavorite, isFavorite }: Favorites
 
   return (
     <div>
-      <h2 className="mb-4">Favorites ({favorites.length})</h2>
+      <h2 className="mb-4">Favorites</h2>
       <div className="row row-cols-1 row-cols-md-3 g-4">
         {favorites.map(article => (
           <div key={article.id}>
