@@ -1,38 +1,31 @@
 export type Source = {
-    id?: string;
-    name: string;
-    url?: string;
-    country?: string;
+  id?: string;
+  name: string;
+  url?: string;
+  country?: string;
 };
 
 export type Article = {
-    id: string;
-    title: string;
-    description: string;
-    content: string;
-    url: string;
-    image?: string;
-    publishedAt: string;
-    lang: string;
-    source: Source;
-    category?: string;
-    isFavorite?: boolean;
-}
+  id: string;
+  title: string;
+  description: string;
+  content: string;
+  url: string;
+  image?: string;
+  publishedAt: string;
+  lang: string;
+  source: Source;
+  category?: string;
+  isFavorite?: boolean;
+};
 
 export type Category =
-    | 'general'
-    | 'world'
-    | 'nation'
-    | 'business'
-    | 'technology'
-    | 'entertainment'
-    | 'sports'
-    | 'science'
-    | 'health';
-
-export interface SearchParams {
-    query: string;
-    category?: Category;
-    from?: string;
-    to?: string;
-}
+  | 'general'
+  | 'world'
+  | 'nation'
+  | 'business'
+  | 'technology'
+  | 'entertainment'
+  | 'sports'
+  | 'science'
+  | 'health';
