@@ -7,6 +7,7 @@ import { useFavorites } from "./hooks/useFavorites.ts";
 
 function App() {
     const [viewMode, setViewMode] = useState<'news' | 'favorites'>('news');
+    const [searchQuery, setSearchQuery] = useState<string>('');
     const favorites = useFavorites();
 
     return (
@@ -15,9 +16,11 @@ function App() {
                 viewMode={viewMode}
                 onViewModeChange={setViewMode}
                 favoritesCount={favorites.favoritesCount}
+                onSearch={setSearchQuery}
             />
             {viewMode === 'news'
                 ? <NewsFeed
+                    searchQuery={searchQuery}
                     isFavorite={favorites.isFavorite}
                     onToggleFavorite={favorites.toggleFavorite}
                 />

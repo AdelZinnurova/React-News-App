@@ -5,6 +5,7 @@ import type {Article, Category} from "../types";
 type NewsFeedProps = {
     isFavorite: (id: string) => boolean;
     onToggleFavorite: (article: Article) => void;
+    searchQuery: string;
 }
 
 const mockArticles: Article[] = [
@@ -107,8 +108,8 @@ const mockArticles: Article[] = [
 const API_KEY = 'f49e4a9d91f4660bfad17bc73c61bf49';
 const BASE_URL = 'https://gnews.io/api/v4';
 
-export const NewsFeed = ({isFavorite, onToggleFavorite}: NewsFeedProps) => {
-    const [articles, setArticles] = useState<Article[] | null>(mockArticles);
+export const NewsFeed = ({isFavorite, onToggleFavorite, searchQuery}: NewsFeedProps) => {
+    const [articles, setArticles] = useState<Article[] | null>(mockArticles)
     const [category, setCategory] = useState<Category>('general');
     const [error, setError] = useState<string | null>(null);
     const [loading, setLoading] = useState<boolean>(false)
@@ -118,7 +119,13 @@ export const NewsFeed = ({isFavorite, onToggleFavorite}: NewsFeedProps) => {
         try {
             setLoading(true);
             setError(null)
-            const response = await fetch(`${BASE_URL}/top-headlines?category=${categoryName}&lang=en&country=us&max=10&apikey=${API_KEY}`);
+            let url;
+            if (searchQuery) {
+                url = `${BASE_URL}/search?q=${searchQuery}&lang=en&country=us&max=10&apikey=${API_KEY}`;
+            } else {
+                url = `${BASE_URL}/top-headlines?category=${categoryName}&lang=en&country=us&max=10&apikey=${API_KEY}`;
+            }
+            const response = await fetch(url);
             const data = await response.json();
             setArticles(data.articles)
         } catch {
@@ -130,13 +137,23 @@ export const NewsFeed = ({isFavorite, onToggleFavorite}: NewsFeedProps) => {
 
     useEffect(() => {
         fetchNewsData(category)
-    }, [category]);
+    }, [category, searchQuery]);
 
     useEffect(() => {
         setArticles(mockArticles);
     }, []);
 
     if (loading) return <div className="wrapper">Loading...</div>
+
+    const filteredArticles = articles?.filter(article => {
+        if (!searchQuery) return true;
+
+        const query = searchQuery.toLowerCase();
+        return (
+            article.title.toLowerCase().includes(query) ||
+            article.description.toLowerCase().includes(query)
+        );
+    });
 
     return (
         <div>
@@ -154,15 +171,30 @@ export const NewsFeed = ({isFavorite, onToggleFavorite}: NewsFeedProps) => {
                 </ul>
             </div>
 
+            {searchQuery && (
+                <div className="alert alert-info mb-3">
+                    Search: <strong>"{searchQuery}"</strong>
+                </div>
+            )}
+
             <div className='row row-cols-1 row-cols-md-3 g-4'>
-                {articles && articles.map((a) => (
-                    <div key={a.id || a.url}>
-                        <ArticleCard article={a}
-                                     isFavorite={isFavorite(a.id)}
-                                     onToggleFavorite={onToggleFavorite}/>
+                {filteredArticles?.map((a) => (
+                    <div className='card-group' key={a.id}>
+                        <ArticleCard
+                            article={a}
+                            isFavorite={isFavorite(a.id)}
+                            onToggleFavorite={onToggleFavorite}
+                        />
                     </div>
                 ))}
             </div>
+
+            {filteredArticles?.length === 0 && (
+                <div className="text-center py-5">
+                    <h5>No articles found</h5>
+                    <p>Try a different search term</p>
+                </div>
+            )}
         </div>
     )
 }

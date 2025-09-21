@@ -20,7 +20,7 @@ export interface ShareModalProps {
 }
 
 export const ShareModal = ({ isOpen, onClose, shareUrl, title }: ShareModalProps) => {
-    const [copied, setCopied] = useState(false); // состояние: true если ссылка скопирована
+    const [copied, setCopied] = useState(false);
 
     if (!isOpen) return null;
 
@@ -35,100 +35,59 @@ export const ShareModal = ({ isOpen, onClose, shareUrl, title }: ShareModalProps
     };
 
     return (
-        <div
-            className="modal-overlay"
-            onClick={onClose}
-            style={{
-                position: 'fixed',
-                top: 0,
-                left: 0,
-                right: 0,
-                bottom: 0,
-                backgroundColor: 'rgba(0, 0, 0, 0.5)',
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                zIndex: 1000,
-            }}
-        >
-            <div
-                className="modal-content"
-                onClick={(e) => e.stopPropagation()}
-                style={{
-                    background: 'white',
-                    padding: '24px',
-                    borderRadius: '12px',
-                    width: '90%',
-                    maxWidth: '500px',
-                    position: 'relative',
-                }}
-            >
-                <button
-                    className="close-btn"
-                    onClick={onClose}
-                    style={{
-                        position: 'absolute',
-                        top: '16px',
-                        right: '16px',
-                        background: 'none',
-                        border: 'none',
-                        fontSize: '24px',
-                        cursor: 'pointer',
-                    }}
-                >
-                    ×
-                </button>
+        <div className="modal d-flex justify-content-center align-items-center z-1 bg-black bg-opacity-50" style={{display: 'block'}}>
+            <div className='modal-dialog modal-lg'>
+                <div className='modal-content' onClick={(e) => e.stopPropagation()}>
+                    <div className='modal-header position-relative'>
+                        <h4 className="modal-title w-100 text-center">Share news</h4>
+                        <button onClick={onClose} type="button" className="btn-close position-absolute end-0 me-3" aria-label="Close"></button>
+                    </div>
+                    <div className="modal-body">
+                        <div className="d-flex gap-2 align-items-center">
+                            <input
+                                type="text"
+                                value={shareUrl}
+                                readOnly
+                                className="form-control flex-grow-1"
+                                style={{
+                                    minWidth: '350px',
+                                    overflow: 'hidden',
+                                    textOverflow: 'ellipsis',
+                                    whiteSpace: 'nowrap'
+                                }}
+                            />
+                            <button
+                                onClick={copyToClipboard}
+                                className={`btn ${copied ? 'btn-success' : 'btn-primary'}`}
+                                disabled={copied}
+                            >
+                                {copied ? 'Copied' : 'Copy'}
+                            </button>
+                        </div>
+                    </div>
+                    <div className="modal-footer d-flex flex-column gap-3 text-center justify-content-center align-items-center">
+                        <p className="mb-0">Share on social networks:</p>
+                        <div className="social-buttons d-flex gap-3 flex-wrap justify-content-center">
+                            <FacebookShareButton url={shareUrl} title={title}>
+                                <FacebookIcon size={40} round />
+                            </FacebookShareButton>
 
-                <h3 className="modal-title" style={{ margin: '0 0 20px 0', textAlign: 'center' }}>
-                    Поделиться статьей
-                </h3>
+                            <VKShareButton url={shareUrl} title={title}>
+                                <VKIcon size={40} round />
+                            </VKShareButton>
 
-                <div className="link-container" style={{ display: 'flex', gap: '8px', marginBottom: '24px' }}>
-                    <input
-                        type="text"
-                        value={shareUrl}
-                        readOnly
-                        className="form-control"
-                        style={{ flex: 1 }}
-                    />
-                    <button
-                        onClick={copyToClipboard}
-                        className={`btn ${copied ? 'btn-success' : 'btn-primary'}`}
-                        disabled={copied}
-                    >
-                        {copied ? '✓ Скопировано' : 'Копировать'}
-                    </button>
-                </div>
+                            <TelegramShareButton url={shareUrl} title={title}>
+                                <TelegramIcon size={40} round />
+                            </TelegramShareButton>
 
-                <div className="social-share">
-                    <p style={{ textAlign: 'center', marginBottom: '16px', fontWeight: '500' }}>
-                        Поделиться в соцсетях:
-                    </p>
-                    <div className="social-buttons" style={{
-                        display: 'flex',
-                        justifyContent: 'center',
-                        gap: '12px',
-                        flexWrap: 'wrap'
-                    }}>
-                        <FacebookShareButton url={shareUrl} title={title}>
-                            <FacebookIcon size={40} round />
-                        </FacebookShareButton>
+                            <WhatsappShareButton url={shareUrl} title={title}>
+                                <WhatsappIcon size={40} round />
+                            </WhatsappShareButton>
 
-                        <VKShareButton url={shareUrl} title={title}>
-                            <VKIcon size={40} round />
-                        </VKShareButton>
-
-                        <TelegramShareButton url={shareUrl} title={title}>
-                            <TelegramIcon size={40} round />
-                        </TelegramShareButton>
-
-                        <WhatsappShareButton url={shareUrl} title={title}>
-                            <WhatsappIcon size={40} round />
-                        </WhatsappShareButton>
-
-                        <TwitterShareButton url={shareUrl} title={title}>
-                            <TwitterIcon size={40} round />
-                        </TwitterShareButton>
+                            <TwitterShareButton url={shareUrl} title={title}>
+                                <TwitterIcon size={40} round />
+                            </TwitterShareButton>
+                        </div>
                     </div>
                 </div>
             </div>

@@ -19,7 +19,12 @@ export const ArticleCard = ({article, onToggleFavorite, isFavorite}: ArticleCard
     return (
         <>
             <article className="card h-100">
-                <img className="card-img-top mb-3" src={article.image} alt="image"/>
+                <img className="card-img-top" src={article.image} alt={article.title} style={{
+                    height: '200px',
+                    width: '100%',
+                    objectFit: 'cover'
+                }}
+                />
                 <div className="card-body">
                     <div className='d-flex justify-content-between'>
                         <p className="card-text text-primary-emphasis">{article.source.name}</p>
@@ -30,7 +35,7 @@ export const ArticleCard = ({article, onToggleFavorite, isFavorite}: ArticleCard
                         <p className="card-text">{article.description}</p>
                         <div className='d-flex justify-content-between'>
                             <a className="card-link text-decoration-none" href={article.url}>Reed more</a>
-                            <div className='d-flex gap-3 mb-3'>
+                            <div className='d-flex gap-3'>
                                 <button onClick={() => onToggleFavorite(article)}>
                                     <i className={isFavorite ? "bi bi-bookmark-check-fill" : "bi bi-bookmark"}></i>
                                 </button>
